@@ -167,7 +167,20 @@ namespace CRUDMahasiswaADO
         }
 
         // ✅ Method baru untuk Form3 (Crystal Report Rekap)
-       
+        public DataTable GetDataRekap(string prodi, DateTime tglMasuk)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_Report", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@inProdi", prodi);
+                cmd.Parameters.AddWithValue("@inTglMsuk", tglMasuk.Year.ToString());
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
 
     }
 }
