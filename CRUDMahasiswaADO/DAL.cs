@@ -141,7 +141,21 @@ namespace CRUDMahasiswaADO
             }
         }
 
-       
+        public DataTable GetDataChartByTahun(DateTime thMasuk)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_DashBoardByTahun", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@inTglMsuk", thMasuk.Year);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        
 
     }
 }
