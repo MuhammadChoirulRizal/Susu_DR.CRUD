@@ -354,6 +354,92 @@ namespace CRUDMahasiswaADO
             }
         }
 
-       
+        private void BtnImpDb_Click(object sender, EventArgs e)
+        {
+            DataTable dt = (dataGridView1.DataSource is BindingSource bs)
+                           ? (DataTable)bs.DataSource
+                           : (DataTable)dataGridView1.DataSource;
+
+            if (dt == null) return;
+
+            int sukses = 0;
+            int duplikat = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                try
+                {
+                    string nim = row["NIM"].ToString().Trim();
+                    string nama = row["Nama"].ToString().Trim();
+                    string jk = row["JenisKelamin"].ToString().Trim();
+                    string alamat = row["Alamat"].ToString().Trim();
+                    string namaProdi = row.Table.Columns.Contains("NamaProdi")
+                        ? row["NamaProdi"].ToString().Trim() : "TI01";
+
+                    // ✅ Parsing DateTime lebih aman
+                    DateTime tgl;
+                    string tglStr = row["TanggalLahir"].ToString().Trim();
+                    if (!DateTime.TryParse(tglStr, out tgl))
+                    {
+                        // Coba format dd/MM/yyyy
+                        if (!DateTime.TryParseExact(tglStr,
+                            new string[] {
+        "dd/MM/yyyy",
+        "d/M/yyyy",
+        "yyyy-MM-dd",
+        "MM/dd/yyyy",
+        "dd-MM-yyyy",  // ✅ tambah ini
+        "d-M-yyyy"     // ✅ tambah ini
+                            },
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None,
+                            out tgl))
+                        {
+                            MessageBox.Show("Format tanggal tidak valid untuk NIM: " + nim + "\nNilai: " + tglStr);
+                            continue;
+                        }
+                    }
+
+                    string kodeProdi = namaProdi.ToLower().Contains("informatika") ? "TI01" : "SI01";
+                    dbLogic.InsertMhs(nim, nama, alamat, jk, tgl, kodeProdi, null);
+                    sukses++;
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627 || ex.Number == 2601)
+                        duplikat++;
+                    else
+                        System.Diagnostics.Debug.WriteLine("Error SQL: " + ex.Message);
+                }
+            }
+
+            MessageBox.Show("Proses Selesai.\nBerhasil: " + sukses + "\nDuplikat (diabaikan): " + duplikat);
+            LoadData();
+        }
+        private void BindingNavigator1_RefreshItems(object sender, EventArgs e) { }
+
+        private void BtnCari_Click(object sender, EventArgs e) { }
+
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dbLogic.resetData();
+                MessageBox.Show("Data berhasil direset");
+                LoadData();
+            }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error :" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("General Error :" + ex.Message);
+            }
+        }
+
+        private void Label5_Click(object sender, EventArgs e) { }
     }
 }
