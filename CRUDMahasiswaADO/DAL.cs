@@ -155,7 +155,19 @@ namespace CRUDMahasiswaADO
             }
         }
 
-        
+        public void TestInject(string nim)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                conn.Open();
+                string query = "UPDATE mahasiswa SET nama='HACKED' WHERE NIM='" + nim + "'";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // ✅ Method baru untuk Form3 (Crystal Report Rekap)
+       
 
     }
 }
