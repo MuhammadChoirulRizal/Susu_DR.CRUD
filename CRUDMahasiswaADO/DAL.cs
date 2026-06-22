@@ -27,5 +27,11 @@ namespace CRUDMahasiswaADO
             return "127.0.0.1";
         }
 
-       
+        public static string GetConnectionString()
+        {
+            return $"Data Source={GetLocalIPAddress()}\\CHOY;Initial Catalog=DBAkademikADO;User ID=sa;Password=123;";
+        }
+
+        
+    }
 }
