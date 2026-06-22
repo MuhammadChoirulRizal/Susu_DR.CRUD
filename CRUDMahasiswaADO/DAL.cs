@@ -95,6 +95,18 @@ namespace CRUDMahasiswaADO
             }
         }
 
+        public void DeleteMhs(string nim)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_DeleteMahasiswa", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@NIM", nim);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         
     }
 }
