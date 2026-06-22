@@ -106,7 +106,17 @@ namespace CRUDMahasiswaADO
                 cmd.ExecuteNonQuery();
             }
         }
+        public void resetData()
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                conn.Open();
+                new SqlCommand("DELETE FROM mahasiswa", conn).ExecuteNonQuery();
+                new SqlCommand("INSERT INTO mahasiswa SELECT * FROM mahasiswa_backup", conn).ExecuteNonQuery();
+            }
+        }
 
         
+
     }
 }
