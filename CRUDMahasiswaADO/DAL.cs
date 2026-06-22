@@ -116,7 +116,19 @@ namespace CRUDMahasiswaADO
             }
         }
 
-        
+        public void InsertLog(string message)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_LogMessage", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("psn", message);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+       
 
     }
 }
