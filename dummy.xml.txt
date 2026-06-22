@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NewDataSet>
+  <Table>
+    <NIM>20250140001</NIM>
+    <Nama>Test</Nama>
+    <JenisKelamin>L</JenisKelamin>
+    <Alamat>Test</Alamat>
+    <NamaProdi>Teknik Informatika</NamaProdi>
+    <TanggalDaftar>2026-01-01</TanggalDaftar>
+  </Table>
+</NewDataSet>
