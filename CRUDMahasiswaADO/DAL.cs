@@ -128,6 +128,19 @@ namespace CRUDMahasiswaADO
             }
         }
 
+        public DataTable GetAllDataChart()
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_DashBoard", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
        
 
     }
