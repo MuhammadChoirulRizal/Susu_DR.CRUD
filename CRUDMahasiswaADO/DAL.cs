@@ -32,6 +32,20 @@ namespace CRUDMahasiswaADO
             return $"Data Source={GetLocalIPAddress()}\\CHOY;Initial Catalog=DBAkademikADO;User ID=sa;Password=123;";
         }
 
+        public int CountMhs()
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("sp_CountMahasiswa", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter output = new SqlParameter("@Total", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                cmd.Parameters.Add(output);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                return (output.Value != DBNull.Value) ? Convert.ToInt32(output.Value) : 0;
+            }
+        }
+
         
     }
 }
